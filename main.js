@@ -31,7 +31,8 @@ define(function (require, exports, module) {
 
     var CommandManager = brackets.getModule("command/CommandManager"),
         EditorManager  = brackets.getModule("editor/EditorManager"),
-        Menus          = brackets.getModule("command/Menus");
+        Menus          = brackets.getModule("command/Menus"),
+        FileUtils      = brackets.getModule("file/FileUtils");
 
 
     var SUCCESS_MSG = "Gist successfully created at:";
@@ -47,9 +48,8 @@ define(function (require, exports, module) {
     function handleAction() {
 
         // Retrieve selection
-        var selectedText = EditorManager.getCurrentFullEditor().getSelectedText();
-        var FileName = EditorManager.getCurrentFullEditor().getFile().getBaseName();
-        console.log(FileName);
+        var selectedText = EditorManager.getCurrentFullEditor().getSelectedText(),
+            fileName = FileUtils.getBaseName(EditorManager.getCurrentFullEditor().getFile().fullPath);
 
         if (selectedText === "") {
             window.alert(EMPTY_MSG);
@@ -61,11 +61,11 @@ define(function (require, exports, module) {
                 "description": defaultDescription,
                 "public": true,
                 "files": {
-                    "mycode.js": {
-                        "content": selectedText
-                    }
                 }
             };
+            postdata.files[fileName] = {
+                "content": selectedText
+            }
 
 
         var postdataString = JSON.stringify(postdata);
