@@ -63,9 +63,10 @@ define(function (require, exports, module) {
                 "files": {
                 }
             };
-            postdata.files[fileName] = {
-                "content": selectedText
-            }
+
+        postdata.files[fileName] = {
+            "content": selectedText
+        };
 
 
         var postdataString = JSON.stringify(postdata);
